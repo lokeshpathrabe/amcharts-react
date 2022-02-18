@@ -4,7 +4,7 @@
   "description": "Amcharts charting library",
   "scripts": {
     "start": "start-storybook -p 9009 -s public",
-    "build-app": "npm run remove:app && build-storybook && mv ./storybook-static/ ./build/",
+    "build-app": "npm run remove:app && build-storybook && mv ./storybook-static/ ./docs/",
     "build-lib": "npm run remove:lib && cross-env NODE_ENV=development webpack --config webpack/webpack.lib.js --colors",
     "generate-docs": "node ./scripts/generateDoc.js",
     "prerelease": "npm run build-lib && node ./scripts/prePublish.js",
