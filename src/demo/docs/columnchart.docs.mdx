@@ -1,0 +1,328 @@
+<a name="ColumnChart"></a>
+
+## ColumnChart ⇐ <code>XYChart</code>
+Create interactive column charts with minimum configuration.
+
+**Kind**: global class  
+**Extends**: <code>XYChart</code>  
+
+* [ColumnChart](#ColumnChart) ⇐ <code>XYChart</code>
+    * [new ColumnChart(config)](#new_ColumnChart_new)
+    * [.onColumnClick(callback)](#ColumnChart+onColumnClick)
+    * [.addColumnSeries(config)](#ColumnChart+addColumnSeries)
+    * [.addLineSeries(config)](#ColumnChart+addLineSeries)
+    * [.isStacked()](#ColumnChart+isStacked) ⇒ <code>boolean</code>
+    * [.addSecondaryYAxis(config)](#XYChart+addSecondaryYAxis)
+    * [.addXYCursorLines()](#XYChart+addXYCursorLines)
+    * [.hideXAxis()](#XYChart+hideXAxis)
+    * [.hideYAxis()](#XYChart+hideYAxis)
+    * [.hideXAxisGridLines()](#XYChart+hideXAxisGridLines)
+    * [.hideYAxisGridLines()](#XYChart+hideYAxisGridLines)
+    * [.addScrollBarX()](#XYChart+addScrollBarX)
+    * [.addPreviewScrollBarX(seriesNames)](#XYChart+addPreviewScrollBarX)
+    * [.rotateXAxisLabels(deg)](#XYChart+rotateXAxisLabels)
+    * [.dispose()](#ChartInterface+dispose)
+    * [.getConfig()](#ChartInterface+getConfig) ⇒ <code>Object</code>
+    * [.getDefaultConfig()](#ChartInterface+getDefaultConfig) ⇒ <code>chartConfig</code>
+    * [.getChartObj()](#ChartInterface+getChartObj) ⇒ <code>object</code>
+    * [.getSeriesByname(name)](#ChartInterface+getSeriesByname) ⇒ <code>object</code>
+    * [.bindData(data)](#ChartInterface+bindData)
+    * [.addLabelLegend(cfg)](#ChartInterface+addLabelLegend)
+    * [.addLabelIconLegend(cfg)](#ChartInterface+addLabelIconLegend)
+    * [.onLegendClick(callback)](#ChartInterface+onLegendClick)
+
+<a name="new_ColumnChart_new"></a>
+
+### new ColumnChart(config)
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  |  |
+| config.id | <code>string</code> |  | id of chart container div |
+| config.chartTitle | <code>string</code> |  | chart title |
+| config.xAxis | <code>Object</code> |  | legend level config |
+| config.xAxis.type | <code>string</code> |  | type of x-axis [category|date] |
+| config.xAxis.dataKey | <code>string</code> |  | key to map x-axis value |
+| config.xAxis.title | <code>string</code> |  | axis title |
+| config.xAxis.minGridDistance | <code>number</code> | <code>30</code> | Minimum distance between 2 labels on xAxis. This might miss align labels with column bars. Set 'dx' on labels to provide offset. See examples |
+| config.xAxis.minCellDistance | <code>number</code> | <code>8</code> | Minimum distance between 2 Columns in pixels. Scrollbar will restrict zoom out to maintain this distance. |
+| [config.xAxis.dateFormat] | <code>number</code> | <code>MMM dd</code> | Minimum distance between 2 Columns. Scrollbar will restrict zoom out to maintain this distance. |
+| config.yAxis | <code>object</code> |  | y-axis configuration object |
+| config.yAxis.title | <code>object</code> |  | Title of y-axis |
+| config.yAxis.minGridDistance | <code>object</code> | <code>30</code> | Minimum distance between 2 labels on y-axis |
+| config.yAxis.autoScale | <code>boolean</code> | <code>false</code> | Allows y-axis to auto scale on zoom to adjust Column height for best fit. |
+
+**Example**  
+```js
+let chart = new ColumnChart({
+      id: "doc-col-chart",
+      chartTitle: "Category Column Series",
+      xAxis: {
+        type: "category",
+        dataKey: "country",
+        title: "Country",
+        minGridDistance: 50,
+      },
+      yAxis: {
+        title: "Visits",
+      },
+    });
+
+    chart.addColumnSeries({
+      name: "Country Visits ",
+      value: "visits",
+      clickable: true,
+    });
+
+    chart.bindData(data);
+```
+<a name="ColumnChart+onColumnClick"></a>
+
+### columnChart.onColumnClick(callback)
+On click handler for column series
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | callback function with 2 params passed. ev (event target) and series (series instance) |
+
+**Example**  
+```js
+columnChart.onColumnClick = (ev, series) => {
+ if(series.name == "Series_Name"){
+   //Your code here
+ }
+}
+```
+<a name="ColumnChart+addColumnSeries"></a>
+
+### columnChart.addColumnSeries(config)
+Add column series to chart. Can be called multiple times to add multiple series to chart.
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  |  |
+| config.name | <code>string</code> | <code>&quot;ColumnSeries&quot;</code> |  |
+| config.value | <code>string</code> | <code>&quot;value&quot;</code> | data key to map y-axis value for the series |
+| config.tootipOrientation | <code>string</code> |  | Series tooltip orientation |
+| config.tooltipFill | <code>string</code> | <code>&quot;#FFFFFF&quot;</code> | Background fill color for tooltip |
+| config.tooltipColor | <code>string</code> | <code>&quot;#6C757D&quot;</code> | Text color for tooltip |
+| config.tooltipText | <code>string</code> | <code>&quot;{categoryX}&#x3D;[bold]{valueY}[/&quot;</code> | Pattern to show tooltip text. More here [amcharts docs](https://www.amcharts.com/docs/v4/concepts/formatters/formatting-strings/) |
+| config.tooltipHTML | <code>string</code> | <code>null</code> | Pattern to show tooltip in HTML |
+| [config.tooltipDateFormat] | <code>string</code> | <code>&quot;MMM dd&quot;</code> | Pattern to show tooltip in HTML |
+| config.fillColor | <code>string</code> | <code>&quot;#3CA6D4&quot;</code> | Fill color for column |
+| config.strokeColor | <code>string</code> | <code>&quot;#3CA6D4&quot;</code> | Stroke color for column |
+| config.stacked | <code>string</code> | <code>false</code> | Set series as stacked column series. |
+
+<a name="ColumnChart+addLineSeries"></a>
+
+### columnChart.addLineSeries(config)
+Add line series to Column series chart to create a multi series chart. See example [here](/?path=/story/charts-column-chart--column-line-series)
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Object</code> |  |  |
+| config.name | <code>string</code> | <code>&quot;LineSeries&quot;</code> |  |
+| config.value | <code>string</code> | <code>&quot;value&quot;</code> | data key to map y-axis value for the series |
+| config.tootipOrientation | <code>string</code> |  | Series tooltip orientation |
+| config.tooltipFill | <code>string</code> | <code>&quot;#FFFFFF&quot;</code> | Background fill color for tooltip |
+| config.tooltipColor | <code>string</code> | <code>&quot;#6C757D&quot;</code> | Text color for tooltip |
+| config.tooltipText | <code>string</code> | <code>&quot;{categoryX}&#x3D;[bold]{valueY}[/&quot;</code> | Pattern to show tooltip text. More here [amcharts docs](https://www.amcharts.com/docs/v4/concepts/formatters/formatting-strings/) |
+| config.tooltipHTML | <code>string</code> |  | Pattern to show tooltip in HTML |
+| [config.tooltipDateFormat] | <code>string</code> | <code>&quot;MMM dd&quot;</code> | Pattern to show tooltip in HTML |
+| config.fillColor | <code>string</code> | <code>&quot;#3CA6D4&quot;</code> | Fill color for column |
+| config.strokeColor | <code>string</code> | <code>&quot;#3CA6D4&quot;</code> | Stroke color for column |
+| config.strokeWidth | <code>string</code> | <code>1</code> | Set stroke width for line series |
+| config.hoverStrokeWidth | <code>string</code> | <code>1</code> | Set stroke width on hover for line series |
+| config.fillOpacity | <code>string</code> | <code>0.1</code> | Set stroke width on hover for line series |
+
+<a name="ColumnChart+isStacked"></a>
+
+### columnChart.isStacked() ⇒ <code>boolean</code>
+Checks if all column series in chart are as stacked column series
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Returns**: <code>boolean</code> - stacked  
+<a name="XYChart+addSecondaryYAxis"></a>
+
+### columnChart.addSecondaryYAxis(config)
+Add secondary Y-Axis to the chart. Usefull incase of multi series charts. See example [here](/?path=/story/charts-column-chart--column-line-series)
+Must be called after adding series to chart
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addSecondaryYAxis</code>](#XYChart+addSecondaryYAxis)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>object</code> |  |  |
+| config.seriesName | <code>string</code> |  | Series to which this axis will map itself |
+| config.title | <code>string</code> |  | Title of the axis |
+| config.opposite | <code>string</code> | <code>true</code> | Position secondary y-axis opposite to primary axis on chart. |
+
+<a name="XYChart+addXYCursorLines"></a>
+
+### columnChart.addXYCursorLines()
+Add XY Cursor lines to the chart.
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addXYCursorLines</code>](#XYChart+addXYCursorLines)  
+<a name="XYChart+hideXAxis"></a>
+
+### columnChart.hideXAxis()
+Hide x-axis of chart
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>hideXAxis</code>](#XYChart+hideXAxis)  
+<a name="XYChart+hideYAxis"></a>
+
+### columnChart.hideYAxis()
+Hide y-axis of chart
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>hideYAxis</code>](#XYChart+hideYAxis)  
+<a name="XYChart+hideXAxisGridLines"></a>
+
+### columnChart.hideXAxisGridLines()
+Hide vertical grid lines of chart
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>hideXAxisGridLines</code>](#XYChart+hideXAxisGridLines)  
+<a name="XYChart+hideYAxisGridLines"></a>
+
+### columnChart.hideYAxisGridLines()
+Hide horizontal grid lines of chart
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>hideYAxisGridLines</code>](#XYChart+hideYAxisGridLines)  
+<a name="XYChart+addScrollBarX"></a>
+
+### columnChart.addScrollBarX()
+Add simple bottom scrollbar to the chart. See example [here](/?path=/story/charts-column-chart--category-column-chart)
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addScrollBarX</code>](#XYChart+addScrollBarX)  
+<a name="XYChart+addPreviewScrollBarX"></a>
+
+### columnChart.addPreviewScrollBarX(seriesNames)
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addPreviewScrollBarX</code>](#XYChart+addPreviewScrollBarX)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| seriesNames | <code>array</code> | Names of series to be added in scrollbar. These series must be added in chart already. Always add PreviewScrollbar after all adapters and series modifications are done to make sure consistency between main series and scrollbar series When PreviewScrollbar object is created the series objects from the main chart is copied to the scrollbar chart. |
+
+<a name="XYChart+rotateXAxisLabels"></a>
+
+### columnChart.rotateXAxisLabels(deg)
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>rotateXAxisLabels</code>](#XYChart+rotateXAxisLabels)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| deg | <code>number</code> | Degree by which to rotate the xAxis labels. |
+
+<a name="ChartInterface+dispose"></a>
+
+### columnChart.dispose()
+Dispose amcharts instance.
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>dispose</code>](#ChartInterface+dispose)  
+<a name="ChartInterface+getConfig"></a>
+
+### columnChart.getConfig() ⇒ <code>Object</code>
+Get the chart applied configuration
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>getConfig</code>](#ChartInterface+getConfig)  
+**Returns**: <code>Object</code> - chartConfig  
+<a name="ChartInterface+getDefaultConfig"></a>
+
+### columnChart.getDefaultConfig() ⇒ <code>chartConfig</code>
+Get the default configuration of amcharts charts.
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>getDefaultConfig</code>](#ChartInterface+getDefaultConfig)  
+<a name="ChartInterface+getChartObj"></a>
+
+### columnChart.getChartObj() ⇒ <code>object</code>
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>getChartObj</code>](#ChartInterface+getChartObj)  
+**Returns**: <code>object</code> - amCharts chart object.
+Use this method to access the macharts object. You can configure chart using this object as you please.  
+<a name="ChartInterface+getSeriesByname"></a>
+
+### columnChart.getSeriesByname(name) ⇒ <code>object</code>
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>getSeriesByname</code>](#ChartInterface+getSeriesByname)  
+**Returns**: <code>object</code> - amCharts series object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | series name to get the series obj |
+
+<a name="ChartInterface+bindData"></a>
+
+### columnChart.bindData(data)
+Use this method to bind data to your chart.
+Typically called in componentDidMount or useEffect methods of react component.
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>bindData</code>](#ChartInterface+bindData)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>array</code> | Chart data |
+
+<a name="ChartInterface+addLabelLegend"></a>
+
+### columnChart.addLabelLegend(cfg)
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addLabelLegend</code>](#ChartInterface+addLabelLegend)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| cfg | <code>object</code> |  |  |
+| cfg.align | <code>string</code> | <code>&quot;right&quot;</code> | Horizontally align legend. Posible values left/right/center. This will work for position "top" and "bottom" |
+| cfg.position | <code>string</code> | <code>&quot;top&quot;</code> | Position legend around chart. Posible values top/bottom/left/right |
+| cfg.clickable | <code>boolean</code> | <code>true</code> | Toggle legend click interaction |
+
+<a name="ChartInterface+addLabelIconLegend"></a>
+
+### columnChart.addLabelIconLegend(cfg)
+Add Legend with icon as marker. See exampe here [here](/?path=/story/charts-column-chart--stacked-column-series)
+
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>addLabelIconLegend</code>](#ChartInterface+addLabelIconLegend)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| cfg | <code>Object</code> |  |  |
+| cfg.align | <code>string</code> | <code>&quot;right&quot;</code> | Horizontally align legend. Posible values left/right/center. This will work for position "top" and "bottom" |
+| cfg.position | <code>string</code> | <code>&quot;top&quot;</code> | Position legend around chart. Posible values top/bottom/left/right |
+| cfg.clickable | <code>boolean</code> | <code>true</code> | Toggle legend click interaction |
+| cfg.icons | <code>Object</code> |  | One of "left/center/right" values |
+| cfg.icons.name | <code>string</code> |  | Name of series |
+| cfg.icons.path | <code>string</code> |  | Path of icon |
+
+<a name="ChartInterface+onLegendClick"></a>
+
+### columnChart.onLegendClick(callback)
+**Kind**: instance method of [<code>ColumnChart</code>](#ColumnChart)  
+**Overrides**: [<code>onLegendClick</code>](#ChartInterface+onLegendClick)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | Attach onclick handler to a clickable legend. This will remove the series toggle effect from legend. |
+
+**Example**  
+```js
+chart.onLegendClick((ev, legend) => {
+      alert(`Clicked on ${ev.target.dataItem.name}`);
+     });
+```

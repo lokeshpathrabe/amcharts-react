@@ -1,0 +1,144 @@
+{
+  "name": "amcharts-react",
+  "version": "1.0.0",
+  "description": "Amcharts charting library",
+  "scripts": {
+    "start": "start-storybook -p 9009 -s public",
+    "build-app": "npm run remove:app && build-storybook && mv ./storybook-static/ ./build/",
+    "build-lib": "npm run remove:lib && cross-env NODE_ENV=development webpack --config webpack/webpack.lib.js --colors",
+    "generate-docs": "node ./scripts/generateDoc.js",
+    "prerelease": "npm run build-lib && node ./scripts/prePublish.js",
+    "release-lib": "release-it 1.0.0 --ci",
+    "postrelease": "node ./scripts/postPublish.js",
+    "remove:lib": "rimraf ./dist",
+    "remove:app": "rimraf ./build",
+    "publish-app": "node ./scripts/publishDemo.js",
+    "test": "jest",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand ",
+    "test:ci": "jest --ci --reporters=default --coverage"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lokeshpathrabe/amcharts-react.git"
+  },
+  "keywords": [
+    "amcharts"
+  ],
+  "author": "lokesh pathrabe",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@amcharts/amcharts4": "^4.10.4",
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "@storybook/addon-docs": "^6.0.4",
+    "@storybook/addon-knobs": "^6.0.4",
+    "@storybook/addon-storysource": "^6.0.13",
+    "@storybook/addon-toolbars": "^6.0.4",
+    "@storybook/react": "^6.0.4",
+    "@storybook/theming": "^6.0.4",
+    "@testing-library/dom": "^7.24.5",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "chalk": "^4.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "cross-env": "^7.0.2",
+    "css-loader": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-loader": "^4.0.2",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.5.3",
+    "jest-dom": "^4.0.0",
+    "jest-environment-node": "^26.5.2",
+    "jest-puppeteer": "^4.4.0",
+    "jsdoc-to-markdown": "^6.0.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "node-ssh": "^11.1.1",
+    "puppeteer": "^5.3.1",
+    "react-is": "^16.13.1",
+    "readline-sync": "^1.4.10",
+    "release-it": "^14.0.3",
+    "sass-loader": "^9.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.10.4",
+    "@release-it/bumper": "^2.0.0",
+    "core-js": "^3.6.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
+  },
+  "peerDependencies": {
+    "@amcharts/amcharts4": "^4.10.4"
+  },
+  "release-it": {
+    "git": {
+      "tagName": "v${version}",
+      "commitMessage": "Releasing new version of amcharts-react v${version}",
+      "requireCleanWorkingDir": false,
+      "requireUpstream": false
+    },
+    "npm": {
+      "publishConfig": {
+        "access": "public",
+        "registry": "http://npm.registry.com"
+      }
+    },
+    "plugins": {
+      "@release-it/bumper": {
+        "out": {
+          "file": "versions.json",
+          "path": "releasing"
+        }
+      }
+    }
+  },
+  "eslintConfig": {
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ]
+        }
+      }
+    }
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/lib/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg|png|jpg)$": "<rootDir>/src/lib/__mocks__/fileMock.js",
+      "^lib(.*)$": "<rootDir>/src/lib$1",
+      "^utils(.*)$": "<rootDir>/src/lib/utils$1"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@amcharts)/)"
+    ],
+    "collectCoverageFrom": [
+      "src/lib/**/*.{js,jsx}",
+      "!src/lib/__tests__/**/*.js",
+      "!src/lib/__mocks__/**/*.js",
+      "!src/lib/__utils__/**/*.js"
+    ],
+    "setupFiles": [
+      "<rootDir>/setupTest.js"
+    ]
+  }
+}

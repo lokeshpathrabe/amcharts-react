@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": "./src",
+    "paths": {
+      "lib": ["./lib/"],
+      "utils": ["./lib/utils/"],
+      "stories": ["./demo/stories/"],
+      "assets": ["./demo/assets/"],
+      "docs": ["./demo/docs/"],
+      "common": ["./demo/common/"]
+    }
+  }
+}
